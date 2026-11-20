@@ -1,0 +1,5 @@
+qrcode-generator@2.0.4
+Copyright (c) 2009 Kazuhiko Arase
+MIT license; copyright and license URL retained in source.
+https://github.com/kazuhikoarase/qrcode-generator
+Only modification: globalThis.ReceiptQRCode export appended.

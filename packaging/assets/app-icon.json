@@ -1,0 +1,8 @@
+{
+  "tool": "OpenAI image_gen (built-in)",
+  "reference": "Wizard Health green wizard hat, supplied brand artwork",
+  "prompt": "Production desktop application icon for Receipt Studio: a compact cream-white and charcoal thermal receipt printer wearing the recognizable bright emerald-green Wizard Health wizard hat. A short white receipt feeds out of the front with three simple dark horizontal lines. Modern restrained Apple-style soft dimensional illustration, crisp edges, minimal detail, centered inside a light warm-gray rounded-square tile, transparent outside the tile. No text, letters, face, beard, wizard body or sparkle decorations. Readable at small icon sizes.",
+  "refinement": "Preserve composition, printer, receipt, colors and style. The wizard hat must have exactly one brim resting directly on the printer, with uninterrupted triangular sides from the brim to the pointed top. Smooth clean rounded-square outer contour and transparent exterior.",
+  "master": "app-icon.png",
+  "regenerate_sizes": "go run ./tools/icons"
+}

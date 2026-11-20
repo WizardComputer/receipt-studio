@@ -1,0 +1,7 @@
+# Keep checked-out sources identical across macOS and Windows. In particular,
+# bundled RPE bytes must match the pinned npm distribution without CRLF conversion.
+* text=auto eol=lf
+
+# Image assets are binary and must never undergo line-ending conversion.
+*.png binary
+*.ico binary

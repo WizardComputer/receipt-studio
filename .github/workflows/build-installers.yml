@@ -1,0 +1,62 @@
+name: Build test installers
+
+# Packaging is explicit while the product is being prepared for its first release.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: installers-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    name: Test and package ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2025
+            target: windows-amd64
+            script: scripts/build-windows.sh
+            installer: receipt-studio-setup-*-amd64.exe
+          - runner: macos-15
+            target: darwin-arm64
+            script: scripts/build-macos.sh
+            installer: receipt-studio-*-arm64.dmg
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install encoder test dependencies
+        run: npm ci --ignore-scripts
+      - name: Test encoder and command fixtures
+        run: npm test
+      - name: Test agent and native UI
+        run: go test -tags desktop ./...
+      - name: Build installer on its target OS
+        env:
+          BUILD_SCRIPT: ${{ matrix.script }}
+        run: bash "$BUILD_SCRIPT"
+      - name: Upload test installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: receipt-studio-${{ matrix.target }}-${{ github.run_number }}
+          path: dist/mygo/${{ matrix.target }}/${{ matrix.installer }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
